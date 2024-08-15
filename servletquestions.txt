@@ -1,0 +1,85 @@
+Questions On Servlets
+	
+	
+	                                                                           
+	1. what is servlet ?
+	2. what is application ?
+	3. what is web application ?
+	4. What is server ?
+	5. what is difference between application server and web server ?
+	6. Why servlet is known as server-side component ?
+	7. what is webpages ?
+	8. What is dynamic webpage ?
+	9. what is printWriter  ?
+	10. what is web container ?
+	11. what is deployment descriptor tool ?
+	12. explain the servlet lifecycle ?
+	13. what is Generic Servlet ?
+	14. what is HttpServlet ? 
+	15. what is difference between Generic Servlet and Http Servlet ?
+	16. hat is difference between doGet() and doPost() ?
+	17. what is request dispatcher ?
+	18. what is servlet context ?
+	19. What is request dispatcher ?
+	20. What is the difference between forward and include ?
+	21. What is servlet context ?
+	22. What is servlet config ?
+	23. Difference between servlet config and servlet context ?
+	24. what is cookies and its method ?
+	25. Disadvantages of cookies ?
+	26. what is session tracking ?
+	27. What are the techniques to achieve session tracking ?
+	28. What is HTTP session and its method ?
+	29. Disadvantages of HTTP session ?
+	30. explain how to get httpsession object ?
+	31. What is URL-rewriting ?
+	32. Disadvantages of URL-rewriting ?
+	33. What is Query string ?
+
+
+JSP
+
+
+
+1. what is jsp?
+
+2. what is implicit objects in jsp. name all the implicit objects.
+
+3. use of implicit objects in jsp
+
+4. Lifecycle of jsp
+
+5. Tags in jsp
+
+6. Difference between scriptlet tag and declaration tag
+
+7. why jsp is slower than servlets.
+
+8. what is url rewriting and its disadvantages
+
+A:- The process of Storing information about the user in the url is called as url- rewriting.
+
+Disadvantages:-
+
+a. Url Rewriting can acheived only through links
+
+b. its not secured to store valuable information about the user.
+
+
+9. Difference between forward() and sendRedirect()
+
+A:- forward():- forward() is used to send request to another resource within the same server
+
+sendRedirect() :- sendRedirect() redirects the request to the another resource of other domain or another server.
+
+10. what is the use of error Page attribute.
+
+A:- errorPage attribute specifies web container, which page has to be displayed if there is any exception or error in the current webpage.
+
+Advantage of error Page attribute:-
+
+1. whenever we get runtime exception, we can hide displaying exception to the user. instead of displaying the exception to user we can display the user convenient message
+
+11. Difference between servlets and jsp
+
+12. explain about scriptlet tag (scripting elements)

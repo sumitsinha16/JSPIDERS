@@ -1,0 +1,30 @@
+                             Spring
+
+1. what is spring ?
+2. what is Ioc Container?
+3. what is pojo class?
+4. Hierarchy of Spring Ioc?
+5. Scope of Beans
+6. Types of Ioc Container
+7. Difference between Bean Factory and Application Context
+8. LifeCycle of a Bean
+9. Constructor injection
+
+10. Setter Injection
+A:-  * Setter Injection is used to acheive Dependency Injection.
+     *  if the properties(variables) of a pojo classes are  injected         (assigning values)  by Ioc Container with the help of Setter           methods, then it is called as setter injection.
+     
+11.  Variable Injection
+
+12.  Dependency Injection
+A:-  If the Dependency is injected(assigned values) by Ioc Container,      then it is called as Dependency Injection.
+     DI can be acheived in 3 ways, they are :- SI,CI and VI..
+ 
+13. explain @component
+14. @componentscan
+15. @configuration
+16. @Bean
+17. @primary and @qualifier
+18. @autowired
+19. @value
+

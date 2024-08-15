@@ -1,0 +1,81 @@
+/                                                                        Hibernate
+
+	1.  what is an ORM tool
+
+	2. What is Hibernate
+
+	3. Architecture of Hibernate
+
+	4. what is EntityManagerFactory
+
+	5. what is EntityManager
+
+	6. What is EntityTransaction
+
+	7. Explain the methods of EntityManager
+
+	8. Difference between persist and merge
+
+	9. explain the use of @entity annotation
+
+	10. @ID and @Column annotation
+
+	11. what is entity class.
+
+	12. what is mapping in hibernate
+
+	13. explain @onetoone
+
+	14. @onetomany
+
+	15. @manytoone
+
+	16. @manytomany
+ 
+	17. what is cacheing in hibernate and its types
+        A:- Cacheing is used when programmer tries to fetch same data multiple times. Cacheing is divided into two types:- a. first level cacheing
+                                    b. second level cacheing
+
+	18. explain second level cache
+        A:- Second Level Cacheing is used when an application has multiple entity managers or             sessions.
+ 
+	19. @cacheable and @cache
+
+	20. what is composite key in hibernate
+	
+	21. @jointable and @joincolumn
+
+	22. Advantages of hibernate over jdbc
+
+	23. @embeddedId and @embeddable
+
+	24. what is persistence.xml?
+        A:-  persistence.xml is used to store database configuration details
+
+	25. explain the methods of entity transaction and its uses.
+
+	26. Explain the lifecycle of Hibernate
+	
+	27. explain Transient state, detached state, persistent state, removed state ?
+	
+	28.  what is JPQLA
+	
+	29.  Explain Query interface and its methods ?
+	
+	30.  Explain @GeneratedValue annotation ?
+
+	31. what is unidirectional
+	-> If the relationship is established only from one side , It is known as uni-           directional 3relationship.
+
+	32. what is Bi- Directional
+	-> If the relationship is established from both sides, It is known as bi-directional                      relationship.
+	->We can fetch the data from both side. 
+
+	33. what is owning side
+	->The table which has foreign key or an entity class with join column annotation
+
+	34. what is reference side.
+
+	35. what is cascading in hibernate
+        A:-  if the operation performed on source entity, it's target entity also gets              affetcted. This is known as Cascading in hibernate.
+

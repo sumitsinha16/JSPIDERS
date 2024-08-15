@@ -1,0 +1,47 @@
+                          JDBC
+
+1. what is an Api
+2. what is jdbc
+3. what is jdbc driver
+4. who is a database vendor. List few
+5. what are the steps in jdbc.
+6. How to Load the driver
+
+7. how to register the driver.
+A:- Class.forName(String classpath) is used to Register the Driver. Class.forName(String classpath) is used to instantiate the class. we instantiate the Driver class by using Class.forName(String classpath) method. Driver class object is loaded into jdbc memory . Then jdbc gets implementation from jdbc driver.
+
+
+8. How to establish the connection  
+9. What is DriverManager.
+A:- DriverManager is the helper class in jdbc, which provides the object of Connection interface. getConnection() method of DriverManager is used to get the object of Connection interface.
+
+10. What is statement.
+11. Explain different types of Statement.
+12. How to execute the Statement
+13. Difference between execute,executeUpdate and executeQuery.
+14. Difference between Statement and PreparedStatement.
+15. What is Result Set and explain its methods.
+16. What is PreparedStatement and explain its methods.
+17. What is placeholder or delimiter and its uses.
+
+18. What is Callable Statement and its advantage.
+A:- Callable Statement is a sub interface of PreparedStatement presented in java.sql package . Callable Statement is a type of Statement. 
+Advantages of Callable Statement :- 
+a. we can call stored procedures. 
+b. stored functions can be called by using callable procedures.
+
+19. What is BatchProcessing 
+20. Explain the advantages and disadvantages of BatchProcessing
+
+21. What is Connection.
+A:- Connection is an interface in jdbc Api. Connection interface is a factory interface which provides the object of Statement , PreparedStatement and Callable Statement. 
+ 
+22. what is stored procedure ?
+A:- Stored Procedure is a set of SQL statements which is stored in database.
+
+23. what is a Batch ?
+A:- A batch is a container which is store multiple SQL statements.
+
+
+
+

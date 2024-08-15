@@ -1,0 +1,895 @@
+package com.example.demo.entity;
+
+import java.sql.Date
+;
+import java.util.List;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class User {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	@Column(nullable = false)
+	private String name;
+	@Column(unique = true,nullable = false)
+	private String email;
+	@Column(unique = true,nullable=false)
+	private String phoneNO;
+	@Column(nullable = false)
+	private String password;
+	private char gender;
+	private Date dob;
+	@OneToMany(mappedBy = "user")
+	private List<Post> post;
+	@OneToMany(mappedBy = "user")
+	private List<Comment> comments;
+}
+
+package com.example.demo.entity;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Post {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String title;
+	private String postData;
+	private LocalDateTime creationTime;
+	@OneToMany(mappedBy = "post")
+	private List<Comment> comments;
+	@ManyToOne
+	private User user;
+}
+
+
+
+
+package com.example.demo.entity;
+
+import java.time.LocalDateTime;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+public class Comment {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+	private String commentData;
+	private LocalDateTime creationTime;
+	@ManyToOne
+	private Post post;
+	@ManyToOne
+	private User user;
+}
+
+
+
+
+
+
+
+
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.ResponseStructure;
+import com.example.demo.entity.User;
+import com.example.demo.service.UserService;
+
+@RestController
+@RequestMapping("/user")
+public class UserController {
+
+	@Autowired
+	private UserService service;
+
+	@PostMapping("/save")
+	public ResponseEntity<ResponseStructure<User>> saveUser(@RequestBody User user) {
+		ResponseStructure<User> structure = service.saveUser(user);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ResponseStructure<User>> updateUser(@RequestBody User user, @PathVariable("id") int id) {
+		ResponseStructure<User> structure = service.updateUser(user, id);
+		return new ResponseEntity<ResponseStructure<User>>(structure, HttpStatus.OK);
+	}
+
+	@GetMapping("/get/{id}")
+	public ResponseEntity<ResponseStructure<User>> fetchUser(@PathVariable("id") int id) {
+		ResponseStructure<User> structure = service.fetchUser(id);
+		return new ResponseEntity<ResponseStructure<User>>(structure, HttpStatus.OK);
+	}
+
+	@GetMapping("/get")
+	public ResponseEntity<ResponseStructure<List<User>>> fetchAllUsers() {
+		ResponseStructure<List<User>> fetchAllUsers = service.fetchAllUsers();
+		return new ResponseEntity<ResponseStructure<List<User>>>(fetchAllUsers, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseStructure<User>> deleteUser(@PathVariable("id") int id) {
+		ResponseStructure<User> structure = service.deleteUser(id);
+		return new ResponseEntity<ResponseStructure<User>>(structure, HttpStatus.OK);
+	}
+}
+
+
+
+
+
+
+
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.Post;
+import com.example.demo.entity.ResponseStructure;
+import com.example.demo.service.PostService;
+
+@RestController
+@RequestMapping("/post")
+public class PostController {
+
+	@Autowired
+	public PostService service;
+
+	@PostMapping("/save/{id}")
+	public ResponseEntity<ResponseStructure<Post>> savePost(@RequestBody Post post, @PathVariable int userId) {
+		ResponseStructure<Post> structure = service.savePost(post, userId);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ResponseStructure<Post>> updatePost(@RequestBody Post post, @PathVariable("id") int id) {
+		ResponseStructure<Post> structure = service.updatePost(post, id);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@GetMapping("/fetch/{id}")
+	public ResponseEntity<ResponseStructure<Post>> fetchPost(@PathVariable("id") int id) {
+		ResponseStructure<Post> post = service.fetchPost(id);
+		return new ResponseEntity<>(post, HttpStatus.OK);
+	}
+
+	@GetMapping("/fetch")
+	public ResponseEntity<ResponseStructure<List<Post>>> fetchAllPosts() {
+		ResponseStructure<List<Post>> structure = service.fetchAllPosts();
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@GetMapping("/fetchByUser/{id}")
+	public ResponseEntity<ResponseStructure<List<Post>>> fetchPostsByUserId(@PathVariable("id") int id) {
+		ResponseStructure<List<Post>> structure = service.fetchPostsByUserId(id);
+		return new ResponseEntity<ResponseStructure<List<Post>>>(structure, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseStructure<Post>> deletePost(@PathVariable("id") int id) {
+		ResponseStructure<Post> structure = service.deletePost(id);
+		return new ResponseEntity<ResponseStructure<Post>>(structure, HttpStatus.OK);
+	}
+}
+
+
+
+
+
+
+
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.example.demo.entity.Comment;
+import com.example.demo.entity.ResponseStructure;
+import com.example.demo.service.CommentService;
+
+@RestController
+@RequestMapping("/comment")
+public class CommentController {
+
+	@Autowired
+	private CommentService service;
+
+	@PostMapping("/save/{userID}/{postId}")
+	public ResponseEntity<ResponseStructure<Comment>> saveComment(@RequestBody Comment com,
+			@PathVariable("userID") int userId, @PathVariable("postID") int postId) {
+
+		ResponseStructure<Comment> structure = service.saveComment(com, userId, postId);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+
+	}
+
+	@PutMapping("/update/{id}")
+	public ResponseEntity<ResponseStructure<Comment>> updateComment(@RequestBody Comment com,
+			@PathVariable("id") int id) {
+		ResponseStructure<Comment> structure = service.updateComment(com, id);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@GetMapping("/fetch/{id}")
+	public ResponseEntity<ResponseStructure<Comment>> fetchComment(@PathVariable("id") int id) {
+		ResponseStructure<Comment> structure = service.fetchComment(id);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@GetMapping("/fetchForPost/{postId}")
+	public ResponseEntity<ResponseStructure<List<Comment>>> fetchCommentsForPost(@PathVariable("postId") int postId) {
+		ResponseStructure<List<Comment>> structure = service.fetchCommentsForPost(postId);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<ResponseStructure<Comment>> deleteComment(@PathVariable("id") int id) {
+		ResponseStructure<Comment> structure = service.deleteComment(id);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+	@DeleteMapping("/deleteAll/{postID}")
+	public ResponseEntity<ResponseStructure<String>> deleteCommentsForPost(@PathVariable("postID") int postId) {
+		ResponseStructure<String> structure = service.deleteCommentsForPost(postId);
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
+
+}
+
+
+
+
+
+
+package com.example.demo.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.Exceptions.EntityAlreadyExistsException;
+import com.example.demo.Exceptions.EntityNotFoundException;
+import com.example.demo.entity.User;
+import com.example.demo.repositries.UserRepositry;
+
+@Repository
+public class UserDao {
+
+	@Autowired
+	private UserRepositry repositry;
+
+	public User saveUser(User user) {
+		boolean existsByEmail = repositry.existsByEmail(user.getEmail());
+		boolean existsByPhoneNO = repositry.existsByPhoneNO(user.getPhoneNO());
+		if (existsByEmail) {
+			throw new EntityAlreadyExistsException("User already exists with email : " + user.getEmail());
+		}
+		if (existsByPhoneNO) {
+			throw new EntityAlreadyExistsException("User already exists with phoneNo : " + user.getPhoneNO());
+		}
+		return repositry.save(user);
+	}
+
+	public User updateUser(User user, int id) {
+		user.setId(id);
+		boolean existsById = repositry.existsById(id);
+		if (!existsById) {
+			throw new EntityNotFoundException("User not found with the ID :" + id);
+		}
+
+		return saveUser(user);
+
+	}
+
+	public User fetchUser(int id) {
+		Optional<User> optional = repositry.findById(id);
+		if (optional.isEmpty()) {
+			throw new EntityNotFoundException("User not found with the ID :" + id);
+		}
+		return optional.get();
+	}
+
+	public List<User> fetchAllUsers() {
+		List<User> list = repositry.findAll();
+		if (list.isEmpty()) {
+			throw new EntityNotFoundException("Users data not available in the database ");
+		}
+
+		return list;
+
+	}
+
+	public User deleteUser(int id) {
+		User user = fetchUser(id);
+		return user;
+	}
+
+}
+
+
+
+
+
+
+
+
+
+package com.example.demo.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.Exceptions.EntityNotFoundException;
+import com.example.demo.entity.Post;
+import com.example.demo.entity.User;
+import com.example.demo.repositries.PostRepositry;
+
+@Repository
+public class PostDao {
+
+	@Autowired
+	private PostRepositry repositry;
+
+	@Autowired
+	private UserDao user_dao;
+
+	public Post savePost(Post post, int userId) {
+		User user = user_dao.fetchUser(userId);
+		post.setUser(user);
+		return repositry.save(post);
+	}
+
+	public Post updatePost(Post post, int id) {
+		boolean existsById = repositry.existsById(id);
+		if (!existsById) {
+			throw new EntityNotFoundException("Post with the id " + id + " is not present");
+		}
+		post.setId(id);
+
+		return repositry.save(post);
+
+	}
+
+	public Post fetchPost(int id) {
+		Optional<Post> optional = repositry.findById(id);
+		if (optional.isEmpty()) {
+			throw new EntityNotFoundException("Post with the id " + id + " is not present");
+		}
+		return optional.get();
+	}
+
+	public List<Post> fetchAllPosts() {
+		List<Post> list = repositry.findAll();
+		if (list.isEmpty()) {
+			throw new EntityNotFoundException("No posts data available in the DataBase");
+		}
+		return list;
+	}
+
+	public List<Post> fetchPostsByUserId(int id) {
+		User user = user_dao.fetchUser(id);
+
+		return user.getPost();
+	}
+
+	public Post deletePost(int id) {
+		Post post = fetchPost(id);
+
+		repositry.delete(post);
+		return post;
+
+	}
+}
+
+
+
+
+
+
+
+
+
+package com.example.demo.dao;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.Exceptions.EntityNotFoundException;
+import com.example.demo.entity.Comment;
+import com.example.demo.entity.Post;
+import com.example.demo.entity.User;
+import com.example.demo.repositries.CommentRespositry;
+
+@Repository
+public class CommentDao {
+
+	@Autowired
+	private CommentRespositry repositry;
+	
+	@Autowired
+	private PostDao post_dao;
+	
+	@Autowired
+	private UserDao user_dao;
+	
+	public Comment saveComment(Comment comment,int user_Id,int post_Id) {
+		User user = user_dao.fetchUser(user_Id);
+		Post post = post_dao.fetchPost(post_Id);
+		
+		comment.setPost(post);
+		comment.setUser(user);
+		
+		return repositry.save(comment);
+	}
+	
+	public Comment updateComment(Comment comment,int id) {
+		if(!repositry.existsById(id)) {
+			throw new EntityNotFoundException("Comment with the id :"+id+" is not present");
+		}
+		comment.setId(id);
+		return repositry.save(comment);
+	}
+	
+	
+	public Comment fetchComment(int id) {
+		Optional<Comment> optional = repositry.findById(id);
+		if(optional.isEmpty()) {
+			throw new EntityNotFoundException("Comment with the id :"+id+" is not present");
+		}
+		return optional.get();
+		
+	}
+	
+	public List<Comment> fetchAllCommentsForPost(int postId) {
+		Post post = post_dao.fetchPost(postId);
+		List<Comment> list = post.getComments();
+		if(list.isEmpty()) {
+			throw new EntityNotFoundException("Comments for the post with the "+postId+" is not present");
+		}
+		return list;
+	}
+	
+	
+	public Comment deleteComment(int id) {
+		Comment comment = fetchComment(id);
+		 repositry.delete(comment);
+		 return comment;
+	}
+	
+	public boolean deleteCommentForAPost(int id) {
+		Post post = post_dao.fetchPost(id);
+		post.setComments(null);
+		post_dao.updatePost(post, id);
+		return true;
+		
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+package com.example.demo.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dao.CommentDao;
+import com.example.demo.entity.Comment;
+import com.example.demo.entity.ResponseStructure;
+
+@Service
+public class CommentService {
+	
+	@Autowired
+	private CommentDao dao;
+
+	public ResponseStructure<Comment> saveComment(Comment com, int userId, int postId) {
+		com.setCreationTime(LocalDateTime.now());
+		Comment comment = dao.saveComment(com, userId, postId);
+		
+		return new ResponseStructure<Comment>(HttpStatus.OK.value(), "Comment saved succesfully", comment, LocalDateTime.now());
+	}
+
+	public ResponseStructure<Comment> updateComment(Comment com, int id) {
+		Comment comment = dao.updateComment(com, id);
+		return new ResponseStructure<Comment>(HttpStatus.OK.value(), "Comment updated succesfully", comment, LocalDateTime.now());
+	}
+
+	public ResponseStructure<Comment> fetchComment(int id) {
+		Comment comment = dao.fetchComment(id);
+		return new ResponseStructure<Comment>(HttpStatus.OK.value(), "Comment retrived succesfully", comment, LocalDateTime.now());
+	}
+
+	public ResponseStructure<List<Comment>> fetchCommentsForPost(int postId) {
+		List<Comment> list = dao.fetchAllCommentsForPost(postId);
+		list.sort((c1,c2)->c1.getCreationTime().compareTo(c2.getCreationTime()));
+		return new ResponseStructure<>(HttpStatus.OK.value(), "Comments retrived succesfully", list, LocalDateTime.now());
+	}
+
+	public ResponseStructure<Comment> deleteComment(int id) {
+		Comment comment = dao.deleteComment(id);
+		return new ResponseStructure<Comment>(HttpStatus.OK.value(), "Comment deletd succesfully", comment, LocalDateTime.now());
+	}
+
+	public ResponseStructure<String> deleteCommentsForPost(int postId) {
+		boolean b = dao.deleteCommentForAPost(postId);
+		return new ResponseStructure<>(HttpStatus.OK.value(), "Comment deleted succesfully", "Comments for the post "+postId+" deletd succesfully", LocalDateTime.now());
+	}
+
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ package com.example.demo.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dao.PostDao;
+import com.example.demo.entity.Post;
+import com.example.demo.entity.ResponseStructure;
+
+@Service
+public class PostService {
+
+	@Autowired
+	private PostDao dao;
+
+	public ResponseStructure<Post> savePost(Post post, int userId) {
+		post.setCreationTime(LocalDateTime.now());
+		Post post2 = dao.savePost(post, userId);
+
+		return new ResponseStructure<Post>(HttpStatus.OK.value(), "Post saved Succesfully", post2, LocalDateTime.now());
+	}
+
+	public ResponseStructure<Post> updatePost(Post post, int id) {
+		Post post2 = dao.updatePost(post, id);
+		return new ResponseStructure<Post>(HttpStatus.OK.value(), "POst updated succesfully", post2,
+				LocalDateTime.now());
+	}
+
+	public ResponseStructure<Post> fetchPost(int id) {
+		Post post = dao.fetchPost(id);
+		return new ResponseStructure<Post>(HttpStatus.OK.value(), "Post retrived succesfully", post,
+				LocalDateTime.now());
+	}
+
+	public ResponseStructure<List<Post>> fetchAllPosts() {
+		List<Post> list = dao.fetchAllPosts();
+		list.sort((p1, p2) -> p1.getCreationTime().compareTo(p2.getCreationTime()));
+		return new ResponseStructure<List<Post>>(HttpStatus.OK.value(), "Posts retrived successfully", list,
+				LocalDateTime.now());
+	}
+
+	public ResponseStructure<List<Post>> fetchPostsByUserId(int id) {
+		List<Post> list = dao.fetchPostsByUserId(id);
+		list.sort((p1, p2) -> p1.getCreationTime().compareTo(p2.getCreationTime()));
+		return new ResponseStructure<List<Post>>(HttpStatus.OK.value(),
+				"Posts for the User " + id + " retrived succesfully", list, LocalDateTime.now());
+	}
+
+	public ResponseStructure<Post> deletePost(int id) {
+		Post post = dao.deletePost(id);
+		return new ResponseStructure<Post>(HttpStatus.OK.value(), "Post deleted Succesfully", post,
+				LocalDateTime.now());
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+package com.example.demo.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+
+import com.example.demo.dao.UserDao;
+import com.example.demo.entity.ResponseStructure;
+import com.example.demo.entity.User;
+
+@Service
+public class UserService {
+
+	@Autowired
+	private UserDao dao;
+
+	public ResponseStructure<User> saveUser(User user) {
+		User user2 = dao.saveUser(user);
+
+		return new ResponseStructure<>(HttpStatus.OK.value(), "User saved Succesfully", user2, LocalDateTime.now());
+	}
+
+	public ResponseStructure<User> updateUser(User user, int id) {
+		User user2 = dao.updateUser(user, id);
+		return new ResponseStructure<>(HttpStatus.OK.value(), "User updated Succesfully", user2, LocalDateTime.now());
+	}
+
+	public ResponseStructure<User> fetchUser(int id) {
+		User user = dao.fetchUser(id);
+		return new ResponseStructure<>(HttpStatus.OK.value(), "User data fetched Succesfully", user,
+				LocalDateTime.now());
+	}
+
+	public ResponseStructure<List<User>> fetchAllUsers() {
+		List<User> list = dao.fetchAllUsers();
+		return new ResponseStructure<>(HttpStatus.OK.value(), "User saved Succesfully", list, LocalDateTime.now());
+	}
+
+	public ResponseStructure<User> deleteUser(int id) {
+		User user = dao.deleteUser(id);
+		return new ResponseStructure<>(HttpStatus.OK.value(), "User saved Succesfully", user, LocalDateTime.now());
+	}
+}
+
+
+
+
+
+
+
+
+
+
+package com.example.demo.Exceptions;
+
+public class EntityAlreadyExistsException extends RuntimeException{
+
+	public EntityAlreadyExistsException(String msg) {
+		super(msg);
+	}
+}
+
+
+
+
+
+
+
+
+
+package com.example.demo.Exceptions;
+
+public class EntityNotFoundException extends RuntimeException {
+
+	
+	public EntityNotFoundException(String msg) {
+		super(msg);
+	}
+	
+}
+
+
+
+
+
+
+
+
+
+
+package com.example.demo.Exceptions;
+
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.example.demo.entity.ResponseStructure;
+
+@RestControllerAdvice
+public class HandleExceptions {
+
+	@ExceptionHandler(EntityAlreadyExistsException.class)
+	public ResponseEntity<ResponseStructure<String>> handleEntityAlreadyExists(EntityAlreadyExistsException e) {
+		ResponseStructure<String> structure = new ResponseStructure<>();
+		structure.setStatusCode(HttpStatus.CONFLICT.value());
+		structure.setMessage("Entity Alrady Exists");
+		structure.setData(e.getMessage());
+		structure.setTime(LocalDateTime.now());
+
+		return new ResponseEntity<>(structure, HttpStatus.CONFLICT);
+	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<ResponseStructure<String>> handleEntityNotFoundException(EntityNotFoundException e) {
+		ResponseStructure<String> structure = new ResponseStructure<>(HttpStatus.NOT_FOUND.value(), "Entity Not Found",
+				e.getMessage(), LocalDateTime.now());
+
+		return new ResponseEntity<>(structure, HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ResponseStructure<String>> handleException(Exception e) {
+		ResponseStructure<String> structure = new ResponseStructure<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),
+				"Internal Server Error Please Try again", e.getMessage(), LocalDateTime.now());
+		return new ResponseEntity<>(structure, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+}
+
+
+
+
+
+
+
+package com.example.demo.repositries;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.Comment;
+
+public interface CommentRespositry extends JpaRepository<Comment, Integer> {
+
+}
+
+
+
+
+
+package com.example.demo.repositries;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.Post;
+
+public interface PostRepositry  extends JpaRepository<Post, Integer>{
+
+}
+
+
+
+
+
+
+
+
+package com.example.demo.repositries;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.example.demo.entity.User;
+
+public interface UserRepositry extends JpaRepository<User, Integer> {
+
+	
+	
+	public boolean existsByEmail(String email);
+	
+	public boolean existsByPhoneNO(String phoneNO);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
