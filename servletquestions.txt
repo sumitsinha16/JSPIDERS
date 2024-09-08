@@ -20,9 +20,7 @@ Questions On Servlets
 	16. hat is difference between doGet() and doPost() ?
 	17. what is request dispatcher ?
 	18. what is servlet context ?
-	19. What is request dispatcher ?
 	20. What is the difference between forward and include ?
-	21. What is servlet context ?
 	22. What is servlet config ?
 	23. Difference between servlet config and servlet context ?
 	24. what is cookies and its method ?
