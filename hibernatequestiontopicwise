@@ -1,0 +1,67 @@
+### Hibernate Overview
+1. What is an ORM tool?  
+2. What is Hibernate?  
+3. Advantages of Hibernate over JDBC
+
+---
+
+### Hibernate Architecture
+4. Architecture of Hibernate  
+5. What is persistence.xml?
+
+---
+
+### Entity Management in Hibernate
+6. What is EntityManagerFactory?  
+7. What is EntityManager?  
+8. What is EntityTransaction?  
+9. Explain the methods of EntityManager  
+10. Explain the methods of EntityTransaction and its uses
+
+---
+
+### Hibernate Entity and Mapping Annotations
+11. What is an entity class?  
+12. Explain the use of @Entity annotation  
+13. @ID and @Column annotation  
+14. Explain @OneToOne  
+15. Explain @OneToMany  
+16. Explain @ManyToOne  
+17. Explain @ManyToMany  
+18. @JoinTable and @JoinColumn  
+19. @EmbeddedId and @Embeddable
+
+---
+
+### Entity States and Lifecycle
+20. Explain the lifecycle of Hibernate  
+21. Explain Transient state, Detached state, Persistent state, Removed state  
+22. What is @GeneratedValue annotation?
+
+---
+
+### Caching in Hibernate
+23. What is caching in Hibernate and its types?  
+24. Explain second level cache  
+25. @Cacheable and @Cache annotations
+
+---
+
+### Relationships in Hibernate
+26. What is unidirectional?  
+27. What is bidirectional?  
+28. What is owning side?  
+29. What is reference side?
+
+---
+
+### Hibernate Queries
+30. What is JPQLA?  
+31. Explain Query interface and its methods
+
+---
+
+### Additional Concepts
+32. What is a composite key in Hibernate?  
+33. What is cascading in Hibernate?  
+34. Difference between persist and merge
